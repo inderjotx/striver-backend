@@ -21,6 +21,7 @@ exports.formDataSchema = zod_1.z.object({
         "Rust"
     ]),
     language_id: zod_1.z.number().min(45, "Invalid language id").max(74, "Invalid language id"),
+    tags: zod_1.z.array(zod_1.z.string()),
     stdIn: zod_1.z.string().optional()
 });
 exports.execCodeSchema = zod_1.z.object({

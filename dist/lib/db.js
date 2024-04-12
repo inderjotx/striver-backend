@@ -9,16 +9,44 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSnippetsWithDisconnect = exports.createSnippetWithDisconnect = void 0;
+exports.getTags = exports.getSnippetsWithDisconnect = exports.createSnippetWithDisconnect = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 // wrapper response for disconnecting prisma client once operation is done 
 exports.createSnippetWithDisconnect = withDisconnectClient(createSnippet);
 exports.getSnippetsWithDisconnect = withDisconnectClient(getSnippets);
+function getTags() {
+    try {
+        const data = client_1.Tags;
+        return {
+            success: true,
+            data: data
+        };
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            return {
+                success: false,
+                error: err.message
+            };
+        }
+        else {
+            return {
+                success: false,
+                error: "Error fetching data"
+            };
+        }
+    }
+}
+exports.getTags = getTags;
 function getSnippets() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const data = yield prisma.snippet.findMany();
+            const data = yield prisma.snippet.findMany({
+                orderBy: {
+                    createdAt: 'desc'
+                }
+            });
             return {
                 success: true,
                 data: data
@@ -40,6 +68,9 @@ function getSnippets() {
         }
     });
 }
+function getTagsEnum(tags) {
+    const data = [];
+}
 function createSnippet(data) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -50,7 +81,9 @@ function createSnippet(data) {
                     language: data.language,
                     stdOut: data.stdOut,
                     stdIn: data.stdIn,
-                    code: data.code
+                    code: data.code,
+                    // @ts-ignore
+                    tags: data.tags
                 }
             });
             return {

@@ -16,4 +16,35 @@ model Snippet {
   stdIn     String?
   stdOut    String
   createdAt DateTime @default(now())
+  tags      Tags[]
+}
+
+enum Tags {
+  Java
+  Python
+  JavaScript
+  CSharp
+  Cpp
+  Ruby
+  Swift
+  Kotlin
+  Go
+  TypeScript
+  Backtracking
+  Recursion
+  BinarySearch
+  DynamicProgramming
+  Greedy
+  BreadthFirstSearch
+  BitManipulation
+  Pointers
+  LinkedLists
+  EnumerableMethods
+  StringManipulation
+  FunctionalProgramming
+  NullSafety
+  Concurrency
+  ArraysAndStrings
+  Generics
+  TypeInference
 }

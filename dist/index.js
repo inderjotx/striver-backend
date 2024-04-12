@@ -28,7 +28,8 @@ app.use(express_1.default.json());
 app.get('/snippets', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // is in cache 
     console.log("req");
-    const inCache = yield (0, redis_1.getSnippets)('snippets');
+    // const inCache = await getSnippets('snippets')
+    const inCache = false;
     if (!inCache) {
         const response = yield (0, db_1.getSnippetsWithDisconnect)();
         if (response.success) {
@@ -41,6 +42,12 @@ app.get('/snippets', (req, res) => __awaiter(void 0, void 0, void 0, function* (
         console.log('cache hit');
         res.json({ success: true, data: inCache }).status(200);
     }
+}));
+app.get('/tags', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // is in cache 
+    console.log("req to get tags ");
+    const response = (0, db_1.getTags)();
+    res.json(response).status(200);
 }));
 app.post('/code', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;

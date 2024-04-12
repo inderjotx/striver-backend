@@ -2,9 +2,8 @@ import express, { Request, Response } from 'express'
 import { formDataSchema, execCodeSchema } from './lib/validation'
 import { executeCode } from './lib/judge0'
 import cors from 'cors'
-import { createSnippetWithDisconnect, getSnippetsWithDisconnect } from './lib/db'
+import { getTags, createSnippetWithDisconnect, getSnippetsWithDisconnect } from './lib/db'
 import { getSnippets, invalidateCache, setSnippets } from './lib/redis'
-import dotenv from 'dotenv'
 
 
 const FRONTEND_URL = process.env.FRONT_END_URL!
@@ -21,19 +20,22 @@ app.use(cors(corsOptions))
 app.use(express.json())
 
 
+
+
 app.get('/snippets', async (req: Request, res: Response) => {
 
 
 	// is in cache 
 	console.log("req")
-	const inCache = await getSnippets('snippets')
+	// const inCache = await getSnippets('snippets')
+
+	const inCache = false
 
 	if (!inCache) {
 
 		const response = await getSnippetsWithDisconnect()
 
 		if (response.success) {
-
 			// setting cache 
 			await setSnippets('snippets', response.data)
 		}
@@ -51,6 +53,21 @@ app.get('/snippets', async (req: Request, res: Response) => {
 
 })
 
+
+app.get('/tags', async (req: Request, res: Response) => {
+
+
+	// is in cache 
+	console.log("req to get tags ")
+
+	const response = getTags()
+
+	res.json(response).status(200)
+
+
+
+
+})
 
 
 

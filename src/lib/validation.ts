@@ -19,6 +19,7 @@ export const formDataSchema = z.object({
         "Rust"
     ]),
     language_id: z.number().min(45, "Invalid language id").max(74, "Invalid language id"),
+    tags: z.array(z.string()),
     stdIn: z.string().optional()
 })
 
